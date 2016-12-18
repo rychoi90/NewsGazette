@@ -45,18 +45,33 @@ app_key.apiKey = aylienGoop.application_key;
 var aylienArticles = Promise.promisifyAll(aylienNonpromise);
 
 module.exports.findRelatedArticles = function(req, res, next) {
-  // var topKeywords = JSON.stringify(keyskeys);
-  var topKeywords = [];
-  res.compoundContent.keywords.map(function(item) {
-    topKeywords.push(JSON.stringify(item.text));
-  });
 
-  topKeywords = (topKeywords.join(' AND '));
+  if (!res.compoundContent.entities) {
+    var topKeywords = [];
+    res.compoundContent.keywords.map(function(item) {
+      topKeywords.push(JSON.stringify(item.text));
+    });
+    topKeywords = (topKeywords.join(' OR '));
 
+  } else if (!!res.compoundContent.entities) {
+    var topEntities = [];
+    res.compoundContent.entities.map(function(item) {
+      if (!!item.disambiguated) {
+        topEntities.push(item.disambiguated.name);
+      } else {
+        topEntities.push(item.text);
+      }
+    });
+    topEntities = topEntities.join(' OR ');
+  }
+
+  var keywordsOrEntities = topEntities || topKeywords;
+  console.log(keywordsOrEntities, 'keyorent');
   var opts = {
-    'text' : topKeywords,
+
+    'text': keywordsOrEntities,
     'language': ['en'],
-    'publishedAtStart': 'NOW-10DAYS',
+    'publishedAtStart': 'NOW-1YEAR',
     // 'sentimentBodyPolarity': 'positive',
     // 'sentimentBodyPolarity': 'negative',
     '_return': ['id', 'title', 'links'],

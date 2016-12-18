@@ -52,7 +52,7 @@ module.exports.getTitle = function(req, res, next) {
 module.exports.getKeywords = function(req, res, next) {
   var parameters = {
     url: req.body.data.url,
-    maxRetrieve: 3
+    maxRetrieve: 5
   };
 
   alchemy_language.keywords(parameters, function (err, response) {
@@ -61,7 +61,7 @@ module.exports.getKeywords = function(req, res, next) {
     } else {
       res.compoundContent = res.compoundContent || {};
       res.compoundContent['keywords'] = response.keywords;
-      // console.log(res.compoundContent, 'inside get keywords!');
+      console.log(res.compoundContent.keywords, 'inside get keywords!');
     }
     next();
   });

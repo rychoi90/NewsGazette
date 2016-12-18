@@ -45,7 +45,7 @@ module.exports = function (app, express) {
   // });
 
   app.post('/api/ext', [
-    watsonController.getKeywords,
+    watsonController.getEntities,
     aylienArticleController.findRelatedArticles,
     ], function(req, res, next) {
       // console.log(req.body.data.url);
