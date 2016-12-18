@@ -33,8 +33,9 @@ module.exports.getEmotions = function(req, res, next) {
 module.exports.getTitle = function(req, res, next) {
   // console.log('request body', req.body.url);
   var parameters = {
-    url: req.body.url
+    url: req.body.data.url
   };
+  console.log(parameters.url);
   alchemy_language.title(parameters, function (err, response) {
     if (err) {
       console.log('error:', err);
@@ -50,8 +51,8 @@ module.exports.getTitle = function(req, res, next) {
 
 module.exports.getKeywords = function(req, res, next) {
   var parameters = {
-    url: req.body.url,
-    maxRetrieve: 5
+    url: req.body.data.url,
+    maxRetrieve: 3
   };
 
   alchemy_language.keywords(parameters, function (err, response) {
@@ -68,10 +69,8 @@ module.exports.getKeywords = function(req, res, next) {
 
 module.exports.getEntities = function(req, res, next) {
   var parameters = {
-    url: req.body.url,
+    url: req.body.data.url,
     maxRetrieve: 5,
-    // sourceText: 'cleaned_or_raw'
-
   };
 
   alchemy_language.entities(parameters, function (err, response) {
@@ -88,25 +87,26 @@ module.exports.getEntities = function(req, res, next) {
 };
 
 
-module.exports.getRelated = function(req, res, next) {
-  console.log('inside get related');
-  var params = {
-    start: 'now-1M',
-    end: 'now',
-    count: 5,
-    return: 'enriched.url.title'
-  };
+// module.exports.getRelated = function(req, res, next) {
+//   console.log('inside get related');
+//   var params = {
+//     start: 'now-1M',
+//     end: 'now',
+//     count: 5,
+//     return: 'enriched.url.title'
+//   };
 
-  alchemy_data_news.getNews(params, function (err, response) {
-    if (err) {
-      console.log('error:', err);
-    } else {
-      console.log('inside getnews');
-      res.compoundContent = res.compoundContent || {};
-      res.compoundContent['relatedArticles'] = response;
-      console.log('gotpast res');
+//   alchemy_data_news.getNews(params, function (err, response) {
+//     if (err) {
+//       console.log('error:', err);
+//     } else {
+//       console.log('inside getnews');
+//       res.compoundContent = res.compoundContent || {};
+//       res.compoundContent['relatedArticles'] = response;
+//       console.log('gotpast res');
 
-    }
-    next();
-  });
-};
+//     }
+//     next();
+// });
+
+// };

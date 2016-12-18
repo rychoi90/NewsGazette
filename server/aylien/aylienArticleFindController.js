@@ -45,15 +45,18 @@ app_key.apiKey = aylienGoop.application_key;
 var aylienArticles = Promise.promisifyAll(aylienNonpromise);
 
 module.exports.findRelatedArticles = function(req, res, next) {
-
-  // var keyskeys = res.compoundContent['keywords']['keywords'][0].text && res.compoundContent['keywords']['keywords'][1].text && res.compoundContent['keywords']['keywords'][2].text && res.compoundContent['keywords']['keywords'][3].text && res.compoundContent['keywords']['keywords'][4].text;
-
   // var topKeywords = JSON.stringify(keyskeys);
+  var topKeywords = [];
+  res.compoundContent.keywords.map(function(item) {
+    topKeywords.push(JSON.stringify(item.text));
+  });
+
+  topKeywords = (topKeywords.join(' AND '));
 
   var opts = {
-    'text' : '"Hillary Clinton" AND "Donald Trump"',
+    'text' : topKeywords,
     'language': ['en'],
-    'publishedAtStart': 'NOW-1DAY',
+    'publishedAtStart': 'NOW-10DAYS',
     // 'sentimentBodyPolarity': 'positive',
     // 'sentimentBodyPolarity': 'negative',
     '_return': ['id', 'title', 'links'],
@@ -81,7 +84,7 @@ module.exports.findRelatedArticles = function(req, res, next) {
       res.compoundContent = res.compoundContent || {};
 
       res.compoundContent['related'] = relatedArticles;
-      console.log(relatedArticles.stories[0].links);
+      // console.log(relatedArticles);
       next();
     });
   }
