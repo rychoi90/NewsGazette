@@ -71,6 +71,7 @@ module.exports.getEntities = function(req, res, next) {
   var parameters = {
     url: req.body.data.url,
     maxRetrieve: 5,
+
   };
 
   alchemy_language.entities(parameters, function (err, response) {

@@ -66,7 +66,7 @@ module.exports.findRelatedArticles = function(req, res, next) {
   }
 
   var keywordsOrEntities = topEntities || topKeywords;
-  console.log(keywordsOrEntities, 'keyorent');
+
   var opts = {
 
     'text': keywordsOrEntities,
