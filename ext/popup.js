@@ -1,5 +1,5 @@
 $(function() {
-  
+
   var initEmotions = {
     'anger': '0.00',
     'disgust': '0.00',
@@ -8,10 +8,15 @@ $(function() {
     'sadness': '0.00'
   };
 
+
   $('.emotion.component').load('emotion.html', function() {
     updateEmotions(initEmotions);
     initRadialGraph(initEmotions);
   });
+
+  // $('.relatedArticles.component').load('related.html', function() {
+  //   // updateLinks(sampleLinks);
+  // });
 
   function makeRandomEmotions() {
     return {
@@ -24,7 +29,7 @@ $(function() {
   }
 
   function updateEmotions(emotions) {
-    var values = Object.keys(emotions).map(key => 
+    var values = Object.keys(emotions).map(key =>
       parseFloat(emotions[key]));
 
     $('.summary-emotion-graph--row').each(function(index) {
@@ -33,7 +38,7 @@ $(function() {
       var barWidth = (val*100).toFixed(2)+'%';
       var labelValue = val.toFixed(2);
       var likelihood = (val > 0.5) ? 'LIKELY' : 'UNLIKELY';
-      $this.find('.summary-emotion-graph--bar-value').css('width',barWidth);
+      $this.find('.summary-emotion-graph--bar-value').css('width', barWidth);
       var labels = $this.find('.summary-emotion-graph--percentage-label').find('span');
       $(labels[0]).text(labelValue);
       $(labels[1]).text(likelihood);
@@ -67,6 +72,25 @@ $(function() {
       $tag.addClass(tag, 'tag');
       $('.politicsDisplay').append($tag);
     }
+
+  function updateLinks(related) {
+    var relatedTitles = [];
+    var relatedLinks = [];
+    // console.log(related.stories[0].links);
+    related.stories.map(function(story) {
+      relatedTitles.push(story.title);
+      relatedLinks.push(story.links.permalink);
+    });
+    // console.log(relatedTitles, 'titles in update links');
+    // console.log(relatedLinks, 'links in update links');
+    var linksTable = $('<table></table>').addClass('table');
+    relatedLinks.map(function(link, index) {
+      var linkEntry = $('<tr></tr>').addClass('tr').append("<a href=" + link + ">" + relatedTitles[index].replace('"', '') + "</a><br/>");
+      linksTable.append(linkEntry);
+      // console.log(relatedTitles[index]);
+    });
+    $('.related-articles').append(linksTable);
+
   }
 
   // The following will open a connection with the active tab
@@ -79,7 +103,7 @@ $(function() {
       }
     });
   });
-  chrome.runtime.onConnect.addListener(function(portToExtension) { 
+  chrome.runtime.onConnect.addListener(function(portToExtension) {
     portToExtension.onMessage.addListener(handleMessage);
   });
 
@@ -99,8 +123,8 @@ $(function() {
 
   function populatePanel(json) {
     // Handle all panel population from the extension endpoint here
-    var emotions = json.emotion ? 
-      json.emotion.docEmotions :  
+    var emotions = json.emotion ?
+      json.emotion.docEmotions :
       makeRandomEmotions();
     updateEmotions(emotions);
     updateRadialGraph(emotions);
@@ -108,6 +132,10 @@ $(function() {
     var sentences = json.sentiment ?
       json.sentiment.sentences :
       dummySentences;
+
+    var related = json.related ? json.related : sampleLinks;
+    updateLinks(related);
+    // console.log(json.keywords);
 
     renderSentimentGraph(sentences);
 
@@ -118,7 +146,7 @@ $(function() {
       rating = 'This page does not exist in our Fake News blacklist.';
     } else if ((json.fake.rating.score + '') === '100') {
       rating = 'WARNING: This page is hosted on a domain that has been blacklisted because of fake news.';
-    } 
+    }
     $('.reliability.component').append(rating);
     $('.flesch.component').append(json.flesch);
     $
@@ -139,5 +167,5 @@ $(function() {
       dataType: 'json'
     });
   };
-  
 });
+
