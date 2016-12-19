@@ -4,6 +4,7 @@ var watsonController = require('../watson/watsonController.js');
 var indicoController = require('../indico/indicoController.js');
 // const googleTrends = require('../trends/googleTrends');
 // const aylien = require('../aylien/aylienController.js');
+const aylienArticleController = require('../aylien/aylienArticleFindController.js');
 const googleLanguage = require('../googleLanguage/googleLanguageController.js');
 
 module.exports = function (app, express) {
@@ -26,19 +27,28 @@ module.exports = function (app, express) {
     res.json(res.compoundContent);
   });
 
-  app.post('/api/ext', newsController.passExtensionData, 
+  app.post('/api/ext',
+    newsController.passExtensionData,
     newsController.getFleschScore,
     newsController.isFakeNews,
     indicoController.getPolitics,
-    googleLanguage.analyzeSentiment, 
-    watsonController.getEmotions, 
+    googleLanguage.analyzeSentiment,
+    watsonController.getEmotions,
+    watsonController.getKeywords,
+    // watsonController.getEntities,
+    aylienArticleController.findRelatedArticles,
     function(req, res, next) {
       // console.log(res.compoundContent.article);
-      console.log(res.compoundContent.flesch);
-      console.log(res.compoundContent.sentiment);
-      console.log(res.compoundContent.emotion);
+      // console.log(res.compoundContent.article);
+      // console.log(res.compoundContent.flesch);
+      // console.log(res.compoundContent.sentiment);
+      // console.log(res.compoundContent.emotion);
+      // console.log(res.compoundContent.entities,'<<***** RES ENTITIES****');
+      // console.log(res.compoundContent.related,'<<=====RELATED ARTICLES=====');
       res.json(res.compoundContent);
   });
+
+
 
   // app.post('/apitest', watsonController.getTitle);
   // app.get('/api/googleTrends', googleTrends.getGoogleTrends);

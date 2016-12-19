@@ -1,9 +1,13 @@
 $(function() {
+<<<<<<< feat/displayArticles
+
+=======
   
   document.getElementById('dataVision').addEventListener('click', handleHighlightCommand);
   document.getElementById('metrics').addEventListener('click', handleHighlightCommand);
   document.getElementById('quotations').addEventListener('click', handleHighlightCommand);
   
+>>>>>>> master
   var initEmotions = {
     'anger': '0.00',
     'disgust': '0.00',
@@ -20,6 +24,10 @@ $(function() {
     initRadialGraph(initEmotions);
   });
 
+  // $('.relatedArticles.component').load('related.html', function() {
+  //   // updateLinks(sampleLinks);
+  // });
+
   function makeRandomEmotions() {
     return {
       'anger': Math.random().toFixed(2),
@@ -31,7 +39,7 @@ $(function() {
   }
 
   function updateEmotions(emotions) {
-    var values = Object.keys(emotions).map(key => 
+    var values = Object.keys(emotions).map(key =>
       parseFloat(emotions[key]));
 
     $('.summary-emotion-graph--row').each(function(index) {
@@ -40,7 +48,7 @@ $(function() {
       var barWidth = (val*100).toFixed(2)+'%';
       var labelValue = val.toFixed(2);
       var likelihood = (val > 0.5) ? 'LIKELY' : 'UNLIKELY';
-      $this.find('.summary-emotion-graph--bar-value').css('width',barWidth);
+      $this.find('.summary-emotion-graph--bar-value').css('width', barWidth);
       var labels = $this.find('.summary-emotion-graph--percentage-label').find('span');
       $(labels[0]).text(labelValue);
       $(labels[1]).text(likelihood);
@@ -75,6 +83,25 @@ $(function() {
       $tag.addClass(tag, 'tag');
       $('.politicsDisplay').append($tag);
     }
+
+  function updateLinks(related) {
+    var relatedTitles = [];
+    var relatedLinks = [];
+    // console.log(related.stories[0].links);
+    related.stories.map(function(story) {
+      relatedTitles.push(story.title);
+      relatedLinks.push(story.links.permalink);
+    });
+    // console.log(relatedTitles, 'titles in update links');
+    // console.log(relatedLinks, 'links in update links');
+    var linksTable = $('<table></table>').addClass('table');
+    relatedLinks.map(function(link, index) {
+      var linkEntry = $('<tr></tr>').addClass('tr').append("<a href=" + link + ">" + relatedTitles[index].replace('"', '') + "</a><br/>");
+      linksTable.append(linkEntry);
+      // console.log(relatedTitles[index]);
+    });
+    $('.related-articles').append(linksTable);
+
   }
 
   //add click handler
@@ -130,7 +157,10 @@ $(function() {
       }
     });
   });
+<<<<<<< feat/displayArticles
+=======
 
+>>>>>>> master
   chrome.runtime.onConnect.addListener(function(portToExtension) {
     portToExtension.onMessage.addListener(handleMessage);
   });
@@ -154,8 +184,8 @@ $(function() {
 
   function populatePanel(json) {
     // Handle all panel population from the extension endpoint here
-    var emotions = json.emotion ? 
-      json.emotion.docEmotions :  
+    var emotions = json.emotion ?
+      json.emotion.docEmotions :
       makeRandomEmotions();
     updateEmotions(emotions);
     updateRadialGraph(emotions);
@@ -164,7 +194,15 @@ $(function() {
       json.sentiment.sentences :
       dummySentences;
 
+<<<<<<< feat/displayArticles
+    var related = json.related ? json.related : sampleLinks;
+    updateLinks(related);
+    // console.log(json.keywords);
+
+    renderSentimentGraph(sentences);
+=======
     renderSentimentGraph(sentences, highlightSentiment);
+>>>>>>> master
 
     console.log('politics', json.politics);
     updatePolitics(json.politics);
@@ -173,7 +211,7 @@ $(function() {
       rating = 'This page does not exist in our Fake News blacklist.';
     } else if ((json.fake.rating.score + '') === '100') {
       rating = 'WARNING: This page is hosted on a domain that has been blacklisted because of fake news.';
-    } 
+    }
     $('.reliability.component').append(rating);
     $('.flesch.component').append(json.flesch);
     $('#spinner').remove();
@@ -212,3 +250,8 @@ $(function() {
   
 });
 
+<<<<<<< feat/displayArticles
+});
+
+=======
+>>>>>>> master

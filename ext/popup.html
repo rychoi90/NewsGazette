@@ -10,22 +10,24 @@
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+     <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"> -->
      <script src="./d3.min.js"></script>
      <script src="./dummySentences.js"></script>
      <script src="sentimentGraph.js"></script>
      <script src="radialDiagram.js"></script>
+     <script src="./sampleLinks.js"></script>
      <script src="popup.js"></script>
   </head>
   <body>
 
   <div id="main">
     <div id="component1" class="emotion component">
-    </div>   
+    </div>
     <div id="component2" class="reliability component">
     </div>
     <div id="component6" class="flesch component">
-      <label class="componentTitle">Grade Level</label>
-    </div>  
+      <label class="componentTitle">Flesch-Kincaid Grade Level</label>
+    </div>
     <div id="component3" class="sentiment component">
       <label class="componentTitle">Sentiment</label>
 
@@ -48,10 +50,10 @@
       <div class="image-result"></div>
     </div> -->
 
-    <div id="component5" class="relatedArticles component">
+    <div id="component5" class="related component">
       <label class="componentTitle">Related Articles</label>
       <br>
-      <div class="relatedArticles"></div>
+      <div class="related-articles"></div>
       <div class="image-result"></div>
     </div>
 
