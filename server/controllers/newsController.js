@@ -12,8 +12,9 @@ var sendJSONresponse = function (res, status, content) {
 
 module.exports = {
   getFleschScore: function(req, res, next) {
+    // console.log(req.body);
     if (req.body.scraped) {
-      var text= req.body.scraped;
+      var text = req.body.scraped;
       // Refactor this stuff out into a text utility?
       var sentenceCount = text.replace(/([.?!])\s*(?=[A-Za-z])/g, "$1|").split('|').length;
       var wordCount = text.split(' ').length;
@@ -26,7 +27,7 @@ module.exports = {
       res.compoundContent['flesch'] = score.toFixed(2);
       next();
     } else {
-      console.log('No article or scraped content specified.')
+      console.log('No article or scraped content specified.');
       sendJSONResponse(res, 404, {
         "message": "Missing required data in request."
       });
