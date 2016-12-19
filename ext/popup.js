@@ -1,5 +1,9 @@
 $(function() {
   
+  document.getElementById('dataVision').addEventListener('click', handleHighlightCommand);
+  document.getElementById('metrics').addEventListener('click', handleHighlightCommand);
+  document.getElementById('quotations').addEventListener('click', handleHighlightCommand);
+  
   var initEmotions = {
     'anger': '0.00',
     'disgust': '0.00',
@@ -23,7 +27,7 @@ $(function() {
       'fear': Math.random().toFixed(2),
       'joy': Math.random().toFixed(2),
       'sadness': Math.random().toFixed(2)
-    }
+    };
   }
 
   function updateEmotions(emotions) {
@@ -42,6 +46,7 @@ $(function() {
       $(labels[1]).text(likelihood);
     });
   }
+
 
   function updatePolitics(politics) {
     var libPercent = politics.Liberal + politics.Green;
@@ -72,17 +77,61 @@ $(function() {
     }
   }
 
+  //add click handler
+
+  function highlightSentiment(sentence, i, score) {
+    var colorSentiment = function(score) {
+      //range -1.00 to 1.00 (200 possible values 199 steps)
+      //approx it to 1-1 match.
+      console.log(score);
+      var r = 255;
+      var g = 0;
+      var b = 0;
+      score = score * 100 + 100;
+      r -= score;
+      g += score;
+      return "rgb(" + r + "," + g + "," + b + ")";
+    };
+
+    var message = { 
+      method: 'highlightSentiment', 
+      sentence: sentence, 
+      i: i, 
+      style:{
+        atr:'background-color',
+        value: colorSentiment(score)
+      }     
+    };  
+    portToBackground.postMessage(message);
+  }
+  
+
+  function handleHighlightCommand() {
+    var message = { method:'highlightContent', modes:[] };
+    //list of all modes:
+    var allModes = ['metrics', 'quotations', 'extreme'];
+    //structure the mode
+    allModes.forEach(mode => {
+      if(document.getElementById(mode).checked){ 
+        message.modes.push(mode);
+      }
+    });
+    portToBackground.postMessage(message); 
+};
+
   // The following will open a connection with the active tab
   // when the extension is open
   chrome.tabs.query({active: true, currentWindow: true}, function(tabs) {
     var portToBackground = chrome.tabs.connect(tabs[0].id, {name: "background"});
+    window.portToBackground = portToBackground; //export the port object
     chrome.commands.onCommand.addListener(function(command) {
       if(command === 'getUserSelectedText') {
-        portToBackground.postMessage({method: "getUserSelectedText"});
+        portToBackground.postMessage({method: "getUserSelectedText"}); //don't post it to server
       }
     });
   });
-  chrome.runtime.onConnect.addListener(function(portToExtension) { 
+
+  chrome.runtime.onConnect.addListener(function(portToExtension) {
     portToExtension.onMessage.addListener(handleMessage);
   });
 
@@ -93,11 +142,14 @@ $(function() {
 
   const popupAction = {
     getUserSelectedText: function(msg) {
+      // chrome.identity.getAuthToken({ 'interactive': true }, function(token) {
+      //     postToDrive(msg.scraped, token);
+      //   });
       postToServer(msg).done(populatePanel).fail(failToPopulate);
     },
     getContentAndUrl: function(msg) {
       postToServer(msg).done(populatePanel).fail(failToPopulate);
-    }
+    },
   };
 
   function populatePanel(json) {
@@ -112,7 +164,7 @@ $(function() {
       json.sentiment.sentences :
       dummySentences;
 
-    renderSentimentGraph(sentences);
+    renderSentimentGraph(sentences, highlightSentiment);
 
     console.log('politics', json.politics);
     updatePolitics(json.politics);
@@ -142,5 +194,21 @@ $(function() {
       dataType: 'json'
     });
   };
-
+  
+  //hook it up with google docs.
+  function postToDrive(content, token) {
+    console.log(token);
+    return $.ajax({
+      url:'https://www.googleapis.com/drive/v3/files/1NQU1qee00IIrFtdkfwIgEjlyIqf4WsH7rqVs2KXGy9g',
+      headers: {
+        "Authorization": "'" + 'Bearer' + token + "'"
+      },
+      type:'PATCH',
+      uploadType: 'media',
+      contentType: 'text/plain',
+      data: content
+    });
+  }
+  
 });
+

@@ -2,48 +2,75 @@
 // The following waits for a connection from the 
 // extension in order to make a reverse connection. 
 chrome.runtime.onConnect.addListener(function(portToBackground) {
-  console.log("COMMAND MADE");
   var portToExtension = chrome.runtime.connect({name:"newsgate"});
-  portToExtension.postMessage({"method":'getContentAndUrl', "data": actions.getContentAndUrl()});
+  actions.getContentAndUrl(null, portToExtension);
   portToBackground.onMessage.addListener(function(message) {
-    portToExtension.postMessage({"method": message.method, "data": actions[message.method]()});
+    handleMessage(message, portToExtension);
   });
 });
 
 function handleMessage(msg, port) {
-  var data = actions[msg.method]();
-  port.postMessage({"method":msg.method, "data": data});
+  actions[msg.method](msg, port);
 };
 
 //add extension -- background.js communication methods here:
 const actions = {
-  getContentAndUrl: function(){
-    return { scraped: $('p').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, ''), 
-              url: window.location.href };
+  getContentAndUrl: function(msg, port){
+    port.postMessage({
+      "method": 'getContentAndUrl',
+      "data": { scraped: $('p').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, ''), 
+                url: window.location.href}
+              });
   },
-  getUserSelectedText: function() {
-    return window.getSelection().toString();
+  getUserSelectedText: function(msg, port) {
+     port.postMessage({
+      "method": 'getUserSelectedText',
+      "data": { scraped: window.getSelection().toString(), 
+                url: window.location.href}
+              });
   },
-  getUrl: function() {
-    return window.location.href;
+  
+  highlightContent: function(msg, port) {
+    msg.style = msg.style || {atr: 'background', value:'orange'};
+    removeHighlight();
+    styleStringInContent(regexConstructor(msg.modes), msg.style.atr, msg.style.value);
+    //to post to the server:
+     // port.postMessage({
+     //  "method": 'highlightContent',
+     //  "data": { scraped: window.getSelection().toString(), 
+     //            url: window.location.href}
+     //          });
   },
-  scrapePlain: function(){
-    return $('p').toArray().map(p => p.innerText).join(' ');
-  },
-  highlight: function(mode) {
+   
+  highlightSentiment: function(msg, port) {
+    msg.style = msg.style || {atr: 'background-color', value:'green'};
+    removeHighlight(); //first clear styles in the page.
+    styleStringInContent(msg.sentence, msg.style.atr, msg.style.value, msg.i);
+    // document.getElementById("highlightItem-" + msg.i).scrollIntoView();
+    var divPosition = $("#highlightItem-" + msg.i).offset();
+    $('html, body').animate({scrollTop: divPosition.top}, "slow");
+  }
 
+};
+
+
+// Utility functions:
+const utils = {
+  getUrl: function(msg, port) {
+      return window.location.href;
+    },
+  scrapePlain: function(msg, port){
+    return $('p').toArray().map(p => p.innerText).join(' ');
   }
 };
 
-// Sends url and scraped text:
-function scrapeAndSend(port) {
-  var url = window.location.href;
-  var scrapedText = $('p, td').toArray().map(item => item.innerText).join(' ').replace(/[\r\n]/g, '');
-  port.postMessage({"scraped": scrapedText, "url": url});
-};
+
+//all modes for the highlighter
+var allModes = ['metrics', 'quotations', 'extreme'];
 
 //returns an array of regex testeres to test against 
-var regexConstructor = function(mode){
+var regexConstructor = function(modes){
+  
   const quantifiers = '(\\d+|a|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve)';
   const binders = '(-| |)'; //dash, empty or none
   const multipliers = '(m|b|thousand|hundred|dozen|fold|times|x|X|percent|%)';
@@ -53,17 +80,38 @@ var regexConstructor = function(mode){
   const repetition = '(double|triple|quadruple)';
   const frequency = '(once|twice|thrice)+(?= a|-)';
 
-  if (mode === 'business') {
-    var r1 = new RegExp( quantifiers +'(?=' + binders + multipliers  + ')', 'g');
-    var r2 = new RegExp(significant, 'g');
-    var r3 = new RegExp(repetition);
-    var r4 = new RegExp(frequency);
-    return [r1, r2, r3, r4];
-  } else if (mode === 'numbers') {
-    return [new RegExp(numbers)];
-  } else if (mode === 'quotations') {
-    return [new RegExp(quotations)];
-  }
+  const financial = '(thousand|million|billion)';
+
+  var options = {
+    metrics: function() {
+      var r1 = new RegExp(numbers);
+      var r2 = new RegExp(financial);
+      return [r1, r2];
+
+      // var r1 = new RegExp( quantifiers +'(?=' + binders + multipliers  + ')', 'g');
+      // var r2 = new RegExp(significant, 'g');
+      // var r3 = new RegExp(repetition);
+      // var r4 = new RegExp(frequency);
+      // return [r1, r2, r3, r4];
+    },
+    quotations: function(){
+      return [new RegExp(quotations)];
+    },
+    numbers: function() {
+      return [new RegExp(numbers)];
+    },
+    extreme: function(){
+      //TODO
+      return [];
+    } 
+  };
+
+  return modes.map(mode => (options[mode]()))
+          .reduce((a,b) => a.concat(b));
+};
+
+const removeHighlight = function() {
+  $('p').toArray().forEach(p => {p.innerText = p.innerText});
 };
 
 //Assumptions:
@@ -74,15 +122,26 @@ var regexConstructor = function(mode){
 //Ex: first argument could be /\d+/ for testing numbers. 
 
 //parerga: textContent or innerText ? 
-
-const styleStringInContent = function(str, cssProperty, cssValue) {
+const styleStringInContent = function(str, cssProperty, cssValue, sentenceId) {
   const beginMarker = '~';
   const endMarker ='`';
 
   //mark text and inject html tags:
-  const markerFunction = function(tag, str, startIndex) {   
+  var markerFunction = function(tag, str, startIndex) {   
     tag.textContent = tag.textContent.slice(0,startIndex) +
     beginMarker + str + endMarker + tag.textContent.slice(startIndex + str.length);
+  };
+
+  var htmlInjector = function(tagType, element, paragraph, id) {
+    var htmlElementToInjectBegin = '';
+    var htmlElementToInjectEnd = '</' + tagType + '>';
+    if(element === 'class') {
+      htmlElementToInjectBegin = '<' + tagType + ' ' + element + '="highlightItem">';
+    } else if (element === 'id') {
+      htmlElementToInjectBegin = '<' + tagType + ' ' + element + '="highlightItem-'+ id + '"'+ '>';
+    }
+    paragraph.innerHTML = paragraph.innerHTML.replace(/~/gi, htmlElementToInjectBegin);
+    paragraph.innerHTML = paragraph.innerHTML.replace(/`/gi, htmlElementToInjectEnd);
   };
 
   //process the content:
@@ -93,16 +152,30 @@ const styleStringInContent = function(str, cssProperty, cssValue) {
       var startIndex = text.indexOf(str);
       if(startIndex !== -1) {
         markerFunction(paragraph, str, startIndex);
+        htmlInjector('span','id', paragraph, sentenceId);
+        $('#highlightItem-'+ sentenceId).css(cssProperty,cssValue);
       }
     } else {
-      var facts = text.split('.').filter(sentence => str.test(sentence));
+      //inject html to the paragraph:a
+      var facts = text.split('.').filter(sentence => some(str, s => s.test(sentence)));
       facts.forEach(fact => markerFunction(paragraph, fact, paragraph.textContent.indexOf(fact)));
+      htmlInjector('span', 'class', paragraph, null);
     }
-    //inject html to the paragraph:
-    var htmlElementToInjectBegin = '<span class="highlightItem">';
-    var htmlElementToInjectEnd = '</span>';
-    paragraph.innerHTML = paragraph.innerHTML.replace(/~/gi, htmlElementToInjectBegin);
-    paragraph.innerHTML = paragraph.innerHTML.replace(/`/gi, htmlElementToInjectEnd); 
   });
-  $('.highlightItem').css(cssProperty,cssValue);
+    $('.highlightItem').css(cssProperty,cssValue);
+  // if(typeof str !== 'string') {
+  //   $('.highlightItem').css(cssProperty,cssValue);
+  // }
 };
+
+
+//underscore function:
+function some (array, test) {
+  var result = [];
+  result = array.filter(item => test(item));
+  if(result.length) {
+    return true;
+  }
+  else return false;
+}
+

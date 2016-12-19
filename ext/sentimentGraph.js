@@ -1,6 +1,6 @@
 /*** Sentiment Graph Code ***/
 
-function renderSentimentGraph(sentences) {
+function renderSentimentGraph(sentences, callback) {
   var scores = sentences.map(sentence => 
     sentence.sentiment.score*sentence.sentiment.magnitude*50);
 
@@ -47,6 +47,8 @@ function renderSentimentGraph(sentences) {
     var index = Math.min(Math.round(x/graphWidth*scores.length),scores.length-1);
     if (index !== lastNewIndex) {
       lastNewIndex = index;
+      callback(sentences[index].text.content, 
+        index, Math.round(sentences[index].sentiment.score*100)/100); 
       // Put events that only fire on index change here
       // console.log(sentences[index].text.content);
       // console.log(x);
@@ -67,7 +69,7 @@ function renderSentimentGraph(sentences) {
         cy: pos.y
       });
   });
-
+  
   secondSvg.append('circle')
     .attr({
       cx: 3,

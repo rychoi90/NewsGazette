@@ -6,8 +6,7 @@
     <link rel="stylesheet" href="./style.css">
     <!--
       - JavaScript and HTML must be in separate files: see our Content Security
-      - Policy documentation[1] for details and explanation.s
-      -
+      - Policy documentation[1] for details and explanation.
       - [1]: https://developer.chrome.com/extensions/contentSecurityPolicy
      -->
      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
@@ -16,7 +15,6 @@
      <script src="sentimentGraph.js"></script>
      <script src="radialDiagram.js"></script>
      <script src="popup.js"></script>
-
   </head>
   <body>
 
@@ -42,19 +40,28 @@
       <br>
       <div class="politicsDisplay"></div>
     </div>
-
+<!-- 
     <div id="component4" class="keyWord component">
       <label class="componentTitle">Key Sentences</label>
       <br>
       <button id="">Find Strong Sentiments</button>
       <div class="image-result"></div>
-    </div>
+    </div> -->
 
     <div id="component5" class="relatedArticles component">
       <label class="componentTitle">Related Articles</label>
       <br>
       <div class="relatedArticles"></div>
       <div class="image-result"></div>
+    </div>
+
+     <div id="component7" class="highlight component">
+      <label class="componentTitle">Highlight</label>
+      <br>
+      <label><input type="checkbox" id="metrics" checked="true">Metrics</label><br>
+      <label><input type="checkbox" id="quotations" checked="true">Quotations</label><br>
+      <label><input type="checkbox" id="extreme" checked="false">Extreme</label><br>
+      <button id="dataVision">Data Vision</button>
     </div>
 
   </div>
