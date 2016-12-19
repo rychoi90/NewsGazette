@@ -94,4 +94,28 @@ svg.sentiment-svg {
 
 .Libertarian {
   background-color: #ffd000;
+
+.tr {
+  border-bottom: 1px solid #D3D3D3;
+  margin-bottom: 15px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+a:link {
+  text-decoration: none;
+  color: black;
+}
+
+/* visited link */
+a:visited {
+    color: green;
+}
+
+/* mouse over link */
+a:hover {
+    color: blue;
+    text-decoration: underline;
+    font-size:14px;
+
 }
