@@ -1,13 +1,10 @@
 $(function() {
-<<<<<<< feat/displayArticles
 
-=======
-  
+
   document.getElementById('dataVision').addEventListener('click', handleHighlightCommand);
   document.getElementById('metrics').addEventListener('click', handleHighlightCommand);
   document.getElementById('quotations').addEventListener('click', handleHighlightCommand);
-  
->>>>>>> master
+
   var initEmotions = {
     'anger': '0.00',
     'disgust': '0.00',
@@ -56,15 +53,15 @@ $(function() {
   }
 
 
-  function updatePolitics(politics) {
-    var libPercent = politics.Liberal + politics.Green;
-    var conPercent = politics.Conservative;
-    var randPercent = politics.Libertarian;
+  // function updatePolitics(politics) {
+  //   var libPercent = politics.Liberal + politics.Green;
+  //   var conPercent = politics.Conservative;
+  //   var randPercent = politics.Libertarian;
 
-    applyTag(libPercent, 'Liberal');
-    applyTag(conPercent, 'Conservative');
-    applyTag(randPercent, 'Libertarian');
-  }
+  //   applyTag(libPercent, 'Liberal');
+  //   applyTag(conPercent, 'Conservative');
+  //   applyTag(randPercent, 'Libertarian');
+  // }
 
   function applyTag(percent, tag){
     var text;
@@ -83,6 +80,7 @@ $(function() {
       $tag.addClass(tag, 'tag');
       $('.politicsDisplay').append($tag);
     }
+  }
 
   function updateLinks(related) {
     var relatedTitles = [];
@@ -120,18 +118,18 @@ $(function() {
       return "rgb(" + r + "," + g + "," + b + ")";
     };
 
-    var message = { 
-      method: 'highlightSentiment', 
-      sentence: sentence, 
-      i: i, 
+    var message = {
+      method: 'highlightSentiment',
+      sentence: sentence,
+      i: i,
       style:{
         atr:'background-color',
         value: colorSentiment(score)
-      }     
-    };  
+      }
+    };
     portToBackground.postMessage(message);
   }
-  
+
 
   function handleHighlightCommand() {
     var message = { method:'highlightContent', modes:[] };
@@ -139,12 +137,12 @@ $(function() {
     var allModes = ['metrics', 'quotations', 'extreme'];
     //structure the mode
     allModes.forEach(mode => {
-      if(document.getElementById(mode).checked){ 
+      if(document.getElementById(mode).checked){
         message.modes.push(mode);
       }
     });
-    portToBackground.postMessage(message); 
-};
+    portToBackground.postMessage(message);
+  };
 
   // The following will open a connection with the active tab
   // when the extension is open
@@ -157,10 +155,7 @@ $(function() {
       }
     });
   });
-<<<<<<< feat/displayArticles
-=======
 
->>>>>>> master
   chrome.runtime.onConnect.addListener(function(portToExtension) {
     portToExtension.onMessage.addListener(handleMessage);
   });
@@ -194,23 +189,15 @@ $(function() {
       json.sentiment.sentences :
       dummySentences;
 
-<<<<<<< feat/displayArticles
-    var related = json.related ? json.related : sampleLinks;
-    updateLinks(related);
-    // console.log(json.keywords);
-
-    renderSentimentGraph(sentences);
-=======
     renderSentimentGraph(sentences, highlightSentiment);
->>>>>>> master
 
-    console.log('politics', json.politics);
-    updatePolitics(json.politics);
+    // console.log('politics', json.politics);
+    // updatePolitics(json.politics);
 
     if ((json.fake.rating.score + '') === '0') {
-      rating = 'This page does not exist in our Fake News blacklist.';
+      rating = '<div><div style="float:left"><img src="approved.png"></div><div style="float:left; width: 250px;">This page does not exist in our Fake News blacklist.</div></div>';
     } else if ((json.fake.rating.score + '') === '100') {
-      rating = 'WARNING: This page is hosted on a domain that has been blacklisted because of fake news.';
+      rating = '<div><div style="float:left;"><img src="blacklisted.png"></div><div style="float:left; width: 250px; color:red; margin-top: 0px;">WARNING: This page is hosted on a domain that has been blacklisted because of fake news.</div></div>';
     }
     $('.reliability.component').append(rating);
     $('.flesch.component').append(json.flesch);
@@ -232,7 +219,7 @@ $(function() {
       dataType: 'json'
     });
   };
-  
+
   //hook it up with google docs.
   function postToDrive(content, token) {
     console.log(token);
@@ -247,11 +234,6 @@ $(function() {
       data: content
     });
   }
-  
+
 });
 
-<<<<<<< feat/displayArticles
-});
-
-=======
->>>>>>> master
