@@ -18,7 +18,7 @@ module.exports = function (app, express) {
   just for talking to Watson and so forth.
 
 */
-  app.post('/api', [expanderController.expandURL,
+  app.post('/api', [//expanderController.expandURL,
                     newsController.isFakeNews,
                     // watsonController.getTitle,
                     // watsonController.getKeywords,
@@ -31,12 +31,17 @@ module.exports = function (app, express) {
     newsController.passExtensionData,
     newsController.getFleschScore,
     newsController.isFakeNews,
-    indicoController.getPolitics,
+    // indicoController.getPolitics,
     googleLanguage.analyzeSentiment,
-    watsonController.getEmotions,
-    watsonController.getKeywords,
+
+    ////// NEED NEW KEYS HERE ///////
+
+    // watsonController.getEmotions,
+    // watsonController.getKeywords,
     // watsonController.getEntities,
-    aylienArticleController.findRelatedArticles,
+    // aylienArticleController.findRelatedArticles,
+
+    ///////////////////////////////////
     function(req, res, next) {
       // console.log(res.compoundContent.article);
       // console.log(res.compoundContent.article);
