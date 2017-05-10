@@ -9,7 +9,7 @@ This extension screens the current page against a blacklist of satirical or untr
 ## Screenshots
 ![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923529/c65c877c-3592-11e7-96c5-f56ec26a5061.png "Sentiment Analysis and Blacklist Verification")
 ![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923531/c65ec802-3592-11e7-8742-31755f307a0a.png "Quotation Highlighter")
-![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923530/c65e8590-3592-11e7-9fe5-b02dd65c155b.png "Related Articles")
+![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923735/c2c4f936-3593-11e7-8512-ff3099632e5d.png "Related Articles")
 
 ## Instructions
 ### Running the project
