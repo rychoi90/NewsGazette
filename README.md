@@ -1,10 +1,10 @@
 # NewsGazette
 On-demand News analysis
 
-## A Chrome extension built to help analyze the news using a variety of tools to validate credibility. This extension screens the current page against a blacklist of satirical or untrustworthy sites, returns a visualization of the sentiment on the page using Google's sentiment analysis, and returns a list of related articles by utilizing Alchemy Language to pull keywords and feed the results through Aylien News API.
+## A Chrome extension built to help analyze the news using a variety of tools to validate credibility.
 
 ## Project Vision
-Create a convenient and insightful way for people to make decisions about the validity of news stories. We set out hoping to create an algorithm that would determine the quality of news stories and eliminate fake news.
+Create an extension that screens the current page against a blacklist of satirical or untrustworthy sites, returns a visualization of the sentiment on the page using Google's sentiment analysis, and returns a list of related articles by utilizing Alchemy Language to pull keywords and feed the results through Aylien News API.
 
 ## Instructions
 ### Running the project
