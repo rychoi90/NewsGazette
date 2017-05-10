@@ -4,7 +4,12 @@ On-demand News analysis
 ## A Chrome extension built to help analyze the news using a variety of tools to validate credibility.
 
 ## Project Vision
-This extension screens the current page against a blacklist of satirical or untrustworthy sites, returns a visualization of the sentiment on the page using Google's sentiment analysis, and returns a list of related articles by utilizing Alchemy Language to pull keywords and feed the results through Aylien News API.
+This extension screens the current page against a blacklist of satirical or untrustworthy sites, returns a visualization of the sentiment on the page using Google's sentiment analysis, and returns a list of related articles by utilizing Alchemy Language to pull keywords and feed the results through Aylien News API. Additionally useful metrics and quotations are easily found with the text highlighter.
+
+## Screenshots
+![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923529/c65c877c-3592-11e7-96c5-f56ec26a5061.png "Sentiment Analysis and Blacklist Verification")
+![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923531/c65ec802-3592-11e7-8742-31755f307a0a.png "Quotation Highlighter")
+![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923530/c65e8590-3592-11e7-9fe5-b02dd65c155b.png "Related Articles")
 
 ## Instructions
 ### Running the project
