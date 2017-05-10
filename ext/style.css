@@ -116,14 +116,10 @@ svg.sentiment-svg {
   border-bottom: 1px solid #D3D3D3;
   margin-bottom: 15px;
   font-size: 12px;
-  text-overflow: ellipsis;
-  overflow: hidden;
+  float: left;
 
 }
 
-.link-table {
-
-}
 
 a:link {
   text-decoration: none;
