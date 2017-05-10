@@ -1,18 +1,18 @@
-# newsgate
-Sniffing the news
+# NewsGazette
+On-demand News analysis
 
-## We created a tool that gives people insights about the news using NLP and social media. Input a URL and get back google trend data, a bubble chart using the Alchemy Language API's keyword extraction and the top tweets for that article. 
+## A Chrome extension built to help analyze the news using a variety of tools to validate credibility. This extension screens the current page against a blacklist of satirical or untrustworthy sites, returns a visualization of the sentiment on the page using Google's sentiment analysis, and returns a list of related articles by utilizing Alchemy Language to pull keywords and feed the results through Aylien News API.
 
 ## Project Vision
-Create a convenient and insightful way for people to make decisions about the validity of news stories. We set out hoping to create an algorithm that would determine the quality of news stories and eliminate fake news. The end goal is 
+Create a convenient and insightful way for people to make decisions about the validity of news stories. We set out hoping to create an algorithm that would determine the quality of news stories and eliminate fake news.
 
 ## Instructions
 ### Running the project
 1) npm install
 2) bower install
-3) cd client and then npm install 
+3) cd client and then npm install
 
-### Do the following: 
+### Do the following:
 
 ### Load Blacklist
 
@@ -39,14 +39,14 @@ Newsgate includes a script to fetch the latest version of the blacklist from "ht
 
 #### Blowing away the Database
 
-This will drop the Mongo database.  
+This will drop the Mongo database.
 
 1) Ensure that Mongo is running<br>
 2) Run 'npm run reset'
 
 ### Add the chrome extension
 1) In chrome://extensions enable developer mode (checkbox in the upper right corner)
-2) drag and drop newsgate/ext folder into the extensions window. 
+2) drag and drop newsgate/ext folder into the extensions window.
 3) the extension should show up in your chrome toolbar
 
 ### Google Trends API - REQUIRED
@@ -73,9 +73,3 @@ To make numerous requests to the Google Trends website, a cookie needs to be sup
 3) Overwrite the 'watsonKey' value with your API key<br>
 4) Save 'watson_api_key.js' file
 
-
-## Team 
-### Emerson Hum -- Scrum master
-### Forrest Murray -- Product owner
-### Aaron Trank -- Backend guru
-### David An -- D3/Angular ninja 
