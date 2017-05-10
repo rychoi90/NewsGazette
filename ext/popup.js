@@ -26,7 +26,7 @@ $(function() {
       'anger': Math.random().toFixed(2),
       'disgust': Math.random().toFixed(2),
       'fear': Math.random().toFixed(2),
-      'joy': Math.random().toFixed(2),
+      'joy': 0.1,
       'sadness': Math.random().toFixed(2)
     };
   }
@@ -92,8 +92,8 @@ $(function() {
     // console.log(relatedLinks, 'links in update links');
     var linksTable = $('<table></table>').addClass('table');
     relatedLinks.map(function(link, index) {
-      var linkEntry = $('<tr></tr>').addClass('tr').append('<div><img src="'+relatedLogo[index]+'"></div><div class="link-table"><a href=' + link + ">" + relatedTitles[index] + "</a></div><br/>");
-      // var linkEntry = $('<tr></tr>').addClass('tr').append("<a href=" + link + ">" + relatedTitles[index].replace("'", '') + "</a><br/>");
+      // var linkEntry = $('<tr></tr>').addClass('tr').append('<div><p><img style="width:50px; height:35px;"src="'+relatedLogo[index]+'"><a href=' + link + ">" + relatedTitles[index] + "</a></p></div><br/>");
+      var linkEntry = $('<tr></tr>').addClass('tr').append('<div style="display:inline-block"><div style="float:left; width:15%; display:inline;"><img src="'+relatedLogo[index]+'"></div><div style="float:right; width:80%; display:inline;"><a href=' + link + ">" + relatedTitles[index] + "</a></div></div><br/>");
       linksTable.append(linkEntry);
       // console.log(linksTable);
     });
