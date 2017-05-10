@@ -11,6 +11,9 @@ This extension screens the current page against a blacklist of satirical or untr
 ![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923531/c65ec802-3592-11e7-8742-31755f307a0a.png "Quotation Highlighter")
 ![Alt text](https://cloud.githubusercontent.com/assets/22466498/25923735/c2c4f936-3593-11e7-8512-ff3099632e5d.png "Related Articles")
 
+## Team
+  Legacy: Efe Surekli, George Michel, Robert Littlejohn, Ryan Choi
+
 ## Instructions
 ### Running the project
 1) npm install
