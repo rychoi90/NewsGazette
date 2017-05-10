@@ -4,7 +4,7 @@ var sampleLinks = {
       title: 'Despite Recusal Pledge, Sessions Interviewing Candidates For Interim FBI Director',
       logo: 'npr.png',
       links: {
-        permalink: 'http://www.timesofisrael.com/to-russia-with-love-trumps-dreams-of-kremlin-power',
+        permalink: 'http://www.npr.org/2017/05/10/527780171/despite-recusal-pledge-sessions-interviewing-candidates-for-interim-fbi-director',
       },
       sentiment: {
         'title': {
@@ -18,10 +18,10 @@ var sampleLinks = {
       }
     },
   {
-      title: 'China "will not exercise restraint" if Trump continues to attack Beijing, state-run paper warns',
+      title: 'After Comey Firing, Calls For Independent Probe Come In Lots Of Flavors',
       logo: 'npr.png',
       links: {
-        permalink: 'http://www.ibtimes.co.uk/china-will-not-exercise-restraint-if-trump-continues-attack-beijing-state-run-paper-warns-1597127',
+        permalink: 'http://www.npr.org/2017/05/10/527777127/after-comey-firing-calls-for-independent-probe-come-in-lots-of-flavors',
       },
       sentiment: {
         'title': {
@@ -35,10 +35,10 @@ var sampleLinks = {
       }
     },
     {
-      title: 'Beijing sees US drone as part of South China Sea spying efforts',
-      logo: 'npr.png',
+      title: 'Did President Trump fire James Comey as part of a cover-up?',
+      logo: 'bbc.png',
       links: {
-        permalink: 'http://timesofindia.indiatimes.com/world/china/beijing-sees-us-drone-as-part-of-south-china-sea-spying-efforts/articleshow/56058713.cms',
+        permalink: 'http://www.bbc.com/news/world-us-canada-39866645',
       },
       sentiment: {
         'title': {
@@ -52,10 +52,10 @@ var sampleLinks = {
       }
     },
     {
-      title: 'Rhode Island electors to cast votes for president Monday',
-      logo: 'npr.png',
+      title: 'Rod Rosenstein, man behind Comey firing, is highly respected on Capitol Hill',
+      logo: 'foxnews.png',
       links: {
-        permalink: 'http://www.richmond.com/news/ap/article_f52c821a-4271-565f-ab33-98aa07dc7b21.html',
+        permalink: 'http://www.foxnews.com/politics/2017/05/10/rod-rosenstein-man-behind-comey-s-firing-is-highly-respected-on-capitol-hill.html',
       },
       sentiment: {
         'title': {
@@ -69,10 +69,10 @@ var sampleLinks = {
       }
     },
     {
-      title: 'Mossad chief gives secret intelligence briefing to Trump staff',
-      logo: 'npr.png',
+      title: 'Trump defends Comey dismissal amid calls for probe',
+      logo: 'aljazeera.png',
       links: {
-        permalink: 'http://www.israelnationalnews.com/News/News.aspx/221929',
+        permalink: 'http://www.aljazeera.com/news/2017/05/trump-defends-comey-dismissal-calls-probe-170510162257820.html',
       },
       sentiment: {
         'title': {
@@ -86,10 +86,10 @@ var sampleLinks = {
       }
     },
     {
-      title: 'Connecticut electors set to cast votes for Clinton',
-      logo: 'npr.png',
+      title: 'Sources: James Comey sought more resources for Russia investigation',
+      logo: 'cnn.png',
       links: {
-        permalink: 'http://www.richmond.com/news/ap/article_46125fd4-a36c-5702-adb4-ff484b2a5684.html',
+        permalink: 'http://www.cnn.com/2017/05/10/politics/james-comey-russia-investigation-money',
       },
       sentiment: {
         'title': {
