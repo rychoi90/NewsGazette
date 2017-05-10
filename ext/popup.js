@@ -21,10 +21,6 @@ $(function() {
     initRadialGraph(initEmotions);
   });
 
-  // $('.relatedArticles.component').load('related.html', function() {
-  //   // updateLinks(sampleLinks);
-  // });
-
   function makeRandomEmotions() {
     return {
       'anger': Math.random().toFixed(2),
@@ -85,18 +81,21 @@ $(function() {
   function updateLinks(related) {
     var relatedTitles = [];
     var relatedLinks = [];
+    var relatedLogo = [];
     // console.log(related.stories[0].links);
     related.stories.map(function(story) {
       relatedTitles.push(story.title);
       relatedLinks.push(story.links.permalink);
+      relatedLogo.push(story.logo);
     });
-    // console.log(relatedTitles, 'titles in update links');
+    console.log(relatedTitles, 'titles in update links');
     // console.log(relatedLinks, 'links in update links');
     var linksTable = $('<table></table>').addClass('table');
     relatedLinks.map(function(link, index) {
-      var linkEntry = $('<tr></tr>').addClass('tr').append("<a href=" + link + ">" + relatedTitles[index].replace('"', '') + "</a><br/>");
+      var linkEntry = $('<tr></tr>').addClass('tr').append('<div><img src="'+relatedLogo[index]+'"></div><div class="link-table"><a href=' + link + ">" + relatedTitles[index] + "</a></div><br/>");
+      // var linkEntry = $('<tr></tr>').addClass('tr').append("<a href=" + link + ">" + relatedTitles[index].replace("'", '') + "</a><br/>");
       linksTable.append(linkEntry);
-      // console.log(relatedTitles[index]);
+      // console.log(linksTable);
     });
     $('.related-articles').append(linksTable);
 
@@ -193,6 +192,8 @@ $(function() {
 
     // console.log('politics', json.politics);
     // updatePolitics(json.politics);
+    var links = json.related ? json.related : sampleLinks;
+    updateLinks(links);
 
     if ((json.fake.rating.score + '') === '0') {
       rating = '<div><div style="float:left"><img src="approved.png"></div><div style="float:left; width: 250px;">This page does not exist in our Fake News blacklist.</div></div>';
@@ -237,3 +238,8 @@ $(function() {
 
 });
 
+window.addEventListener('click',function(e){
+  if(e.target.href!==undefined){
+    chrome.tabs.create({url:e.target.href})
+  }
+})
